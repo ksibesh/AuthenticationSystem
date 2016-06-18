@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:couchbase="http://www.springframework.org/schema/data/couchbase"
+	xmlns:repository="http://www.springframework.org/schema/data/repository"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/data/couchbase http://www.springframework.org/schema/data/couchbase/spring-couchbase-1.0.xsd
+	http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-1.0.xsd">
+	
+	<context:component-scan base-package="com.authentication" />
+	<context:property-placeholder location="classpath:config/${env_var}.properties" />
+	
+	<couchbase:couchbase id="authBucket" bucket="${auth.bucket.name}" host="${auth.bucket.host}" password="${auth.bucket.password:}"/>
+	<couchbase:template id="authTemplate" client-ref="authBucket"/>
+	<couchbase:repositories base-package="com.authentication.repository" couchbase-template-ref="authTemplate" />
+</beans>
